@@ -8,8 +8,34 @@ namespace probleme
     {
         static void Main(string[] args)
         {
-            List<User> data = read_csv(@"D:\dev\vs repos\probleme\probleme\data.csv");
-            Console.WriteLine(pred(data[1], 0, data));
+            Console.Write("Path of your csv file : ");
+            string path = Console.ReadLine();
+            List<User> data = read_csv(@path);
+            Console.WriteLine();
+            Console.WriteLine("Pearson correlation coefficient / Similarity between users, User 1 and User 2 for example");
+            Console.WriteLine("SC(user1, user2) = {0}", SC(data[0], data[1]));
+            Console.WriteLine();
+            Console.WriteLine("Based on this similarity we can use KNN to predict user ratings for a product");
+            Console.WriteLine("For example the rating of P4 for User 1 is : ");
+            Console.WriteLine("pred(user1, P4) = {0}", pred(data[0], 3, data));
+            Console.WriteLine();
+            Console.WriteLine("We apply this formula to predict the other values and we get this table");
+            Console.WriteLine();
+            foreach (User u in data)
+            {
+                for (int i = 0; i < u.products.Length; i++)
+                {
+                    if (u.products[i] == "")
+                    {
+                        Console.Write("{0} \t",Math.Ceiling(pred(u, i, data) * 100) / 100);
+                    }
+                    else
+                    {
+                        Console.Write("{0} \t", u.products[i]);
+                    }
+                }
+                Console.WriteLine();
+            }
             Console.Read();
         }
 
